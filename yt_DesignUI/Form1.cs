@@ -56,7 +56,7 @@ namespace yt_DesignUI
         {
             int ProcessesNums = Int32.Parse(comboBoxCountProcesses.SelectedItem.ToString());
             int A = Int32.Parse(textBoxA.Text);
-            int B = Int32.Parse(textBoxA.Text);
+            int B = Int32.Parse(textBoxB.Text);
             int Steps = Int32.Parse(textBoxSteps.Text);
 
             for (int i = 0; i < ProcessesNums; i++)
