@@ -17,6 +17,7 @@ namespace yt_DesignUI
     {
         private List<Process> processes = new List<Process>();
 
+        private List<Process> PausedProcesses = new List<Process>();
 
 
         public enum ThreadAccess : int
@@ -103,7 +104,7 @@ namespace yt_DesignUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка: {ex.Message}", "Процес вже вмер", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Процес вже вмер: ", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -120,6 +121,10 @@ namespace yt_DesignUI
                     CloseHandle(hThread);
                 }
             }
+            buttonPauseProcess.Visible = false;
+            buttonResumeProcess.Visible = true;
+
+            PausedProcesses.Add(SelectedProcess);
         }
 
         private void buttonResumeProcess_Click(object sender, EventArgs e)
@@ -135,14 +140,24 @@ namespace yt_DesignUI
                     CloseHandle(hThread);
                 }
             }
+
+            buttonPauseProcess.Visible = true;
+            buttonResumeProcess.Visible = false;
+
+            PausedProcesses.Remove(SelectedProcess);
+        }
+
+        private bool IsProcessSuspended(Process process)
+        {
+             return PausedProcesses.Contains(process) ;
         }
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            Process selectedProcess = processes[comboBox1.SelectedIndex];
+            Process SelectedProcess = processes[comboBox1.SelectedIndex];
 
             // Отримуємо пріоритет процесу
-            ProcessPriorityClass priorityClass = selectedProcess.PriorityClass;
+            ProcessPriorityClass priorityClass = SelectedProcess.PriorityClass;
 
             // Встановлюємо індекс в comboBox2 відповідно до пріоритету
             switch (priorityClass)
@@ -156,6 +171,18 @@ namespace yt_DesignUI
                 default:
                     comboBox2.SelectedIndex = 2;
                     break;
+            }
+
+            if (IsProcessSuspended(SelectedProcess))
+            {
+                buttonPauseProcess.Visible = false;
+                buttonResumeProcess.Visible = true;
+
+            }
+            else
+            {
+                buttonPauseProcess.Visible = true;
+                buttonResumeProcess.Visible = false;
             }
         }
 
@@ -176,6 +203,11 @@ namespace yt_DesignUI
                     SelectedProcess.PriorityClass = ProcessPriorityClass.Normal;
                     break;
             }
+        }
+
+        private void comboBox1_Click(object sender, EventArgs e)
+        {
+            SetComboBox();
         }
     }
 }
