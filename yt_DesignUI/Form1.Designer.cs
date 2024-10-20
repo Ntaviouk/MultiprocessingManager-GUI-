@@ -292,6 +292,7 @@
             this.Controls.Add(this.groupBoxTaylorRow);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.TopMost = true;
             this.groupBoxTaylorRow.ResumeLayout(false);
             this.groupBoxMultiprocessingManager.ResumeLayout(false);
             this.ResumeLayout(false);
